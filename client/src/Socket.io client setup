@@ -1,0 +1,22 @@
+import io from 'socket.io-client';
+import { appointmentCreated, appointmentUpdated, appointmentDeleted } from './actions/notificationActions';
+import store from './store'; // Assuming this is the Redux store
+
+// INPUT_REQUIRED {Assuming user token is available}
+const token = 'USER_TOKEN';
+
+const socket = io('http://localhost:3000', { // Remember to replace with actual server URL
+  query: { token }
+});
+
+socket.on('appointmentCreated', (appointment) => {
+  store.dispatch(appointmentCreated(appointment));
+});
+
+socket.on('appointmentUpdated', (appointment) => {
+  store.dispatch(appointmentUpdated(appointment));
+});
+
+socket.on('appointmentDeleted', (appointmentId) => {
+  store.dispatch(appointmentDeleted(appointmentId));
+});
