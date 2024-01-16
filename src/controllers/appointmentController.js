@@ -60,3 +60,34 @@ exports.deleteAppointment = async (req, res) => {
     res.status(500).json({ message: 'Error deleting appointment', error: error.message });
   }
 };
+
+exports.searchAppointments = async (req, res) => {
+  try {
+    const { location, provider, service, start, end } = req.query;
+
+    let query = {};
+
+    if (location) {
+      query.location = { $regex: location, $options: "i" };
+    }
+    if (provider) {
+      query.provider = provider;
+    }
+    if (service) {
+      query.service = { $regex: service, $options: "i" };
+    }
+    if (start && end) {
+      query.startTime = { $gte: new Date(start) };
+      query.endTime = { $lte: new Date(end) };
+    } else if (start) {
+      query.startTime = { $gte: new Date(start) };
+    } else if (end) {
+      query.endTime = { $lte: new Date(end) };
+    }
+
+    const appointments = await Appointment.find(query).populate('patient provider');
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(500).json({ message: 'Error searching for appointments', error: error.message });
+  }
+};

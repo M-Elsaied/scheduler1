@@ -15,6 +15,10 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  location: { // INPUT_REQUIRED {Add field description for the location if applicable, for example, 'Clinic A', 'Hospital B', etc.}
+    type: String,
+    required: true
+  },
   startTime: {
     type: Date,
     required: true,
@@ -27,7 +31,9 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     enum: ['Scheduled', 'Completed', 'Cancelled', 'No-Show'],
     default: 'Scheduled',
-  },
+  }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Appointment', appointmentSchema);
+const Appointment = mongoose.model('Appointment', appointmentSchema);
+
+module.exports = Appointment;
