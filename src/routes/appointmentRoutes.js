@@ -10,7 +10,7 @@ const { requireAuth } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-router.post('/', requireAuth(['Admin', 'Staff']), createAppointment);
+router.post('/', requireAuth(['Super Admin','Admin', 'Staff']), createAppointment);
 router.get('/', requireAuth(['Super Admin', 'Admin', 'Staff', 'Doctor', 'Patient']), getAppointments);
 router.get('/:id', requireAuth(['Super Admin', 'Admin', 'Staff', 'Doctor', 'Patient']), getAppointment);
 router.put('/:id', requireAuth(['Super Admin', 'Admin', 'Staff']), updateAppointment);
